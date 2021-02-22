@@ -94,7 +94,7 @@ jobs:
     - name: upload to apt repo
       run: |
         cp .aptly.conf /home/runner/
-        aptly mirror create remote https://api.facinating.tech/debian/ debian
+        aptly mirror create remote https://apt.facinating.tech/debian/ debian
         aptly repo create local
         aptly repo import remote local
         aptly repo add local ${{ env.VALHEIM_SERVER_PATH }}
