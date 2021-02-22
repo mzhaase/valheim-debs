@@ -93,15 +93,30 @@ jobs:
     #     body: "Release"
     - name: upload to apt repo
       run: |
+        echo "Importing secret key"
+        echo ${{ secrets.GPG_PRIVATE_KEY }} | gpg1 --import
+
+        echo "Importing public key"
+        gpg --no-default-keyring --keyring trustedkeys.gpg --import key.gpg
+
         cp .aptly.conf /home/runner/
-        # aptly mirror create remote https://apt.facinating.tech/debian/ debian
+
+        echo "loading remote repo"
+        aptly mirror create remote https://apt.facinating.tech/ debian
+        aptly mirror update remote
+
+        echo "creating local repo"
         aptly repo create local
-        # aptly repo import remote local
+
+        echo "importing remote repo to local"
+        aptly repo import remote local *
         aptly repo add local ${{ env.VALHEIM_SERVER_PATH }}
         aptly repo add local ${{ env.VALHEIM_SERVER_PLUS_PATH }}
+
+        echo "publishing"
         aptly publish repo \
-          -distribution="./" \
-          -skip-signing \ 
+          -distribution="debian" \
+          -passphrase=${{ secrets.GPG_PASSPHRASE }}
           local s3:apt.facinating.tech:
       env:
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
