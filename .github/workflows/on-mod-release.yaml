@@ -41,4 +41,3 @@ jobs:
           git push
         with:
           github_token: ${{ secrets.GH_TOKEN }}
-        # we need to use a different token here see https://github.community/t/push-from-action-does-not-trigger-subsequent-action/16854
