@@ -82,8 +82,8 @@ jobs:
         cp .aptly.conf /home/runner/
         aptly repo add local valheim-server.deb
         aptly repo add local valheim-server-plus.deb
-        aptly publish repo local s3:apt.facinating.tech: \
-          -passphrase=${{ secrets.GPG_PASSPHRASE }}
+        aptly publish repo -passphrase=${{ secrets.GPG_PASSPHRASE }} \
+          local s3:apt.facinating.tech:
       env:
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
