@@ -116,7 +116,7 @@ jobs:
         echo "publishing"
         aptly publish repo \
           -distribution="debian" \
-          -passphrase="${{ secrets.GPG_PASSPHRASE }}"
+          -passphrase="${{ secrets.GPG_PASSPHRASE }}" \
           local s3:apt.facinating.tech:
       env:
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
