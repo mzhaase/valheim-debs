@@ -86,7 +86,7 @@ jobs:
         aptly publish repo \
           -distribution="debian" \
           -passphrase=${{ secrets.GPG_PASSPHRASE }} \
-          -gpg-key=${{ steps.import_gpg.outputs.keyid }}
+          -gpg-key=${{ steps.import_gpg.outputs.keyid }} \
           local s3:apt.facinating.tech:
       env:
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
