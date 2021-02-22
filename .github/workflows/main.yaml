@@ -97,7 +97,7 @@ jobs:
         echo "${{ secrets.GPG_PRIVATE_KEY }}" | gpg1 --import
 
         echo "Importing public key"
-        gpg1--no-default-keyring --keyring trustedkeys.gpg --import key.gpg
+        gpg1 --no-default-keyring --keyring trustedkeys.gpg --import key.gpg
 
         cp .aptly.conf /home/runner/
 
