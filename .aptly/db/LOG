@@ -42,3 +42,45 @@
 18:35:22.363486 db@open done T·4.900931ms
 18:35:24.669199 db@close closing
 18:35:24.669272 db@close done T·71.6µs
+=============== Feb 22, 2021 (CET) ===============
+19:38:40.855539 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+19:38:40.855690 version@stat F·[3] S·2KiB[2KiB] Sc·[0.75]
+19:38:40.855699 db@open opening
+19:38:40.855727 journal@recovery F·1
+19:38:40.856642 journal@recovery recovering @9
+19:38:40.874635 memdb@flush created L0@11 N·4 S·712B "E20..ain,v20":"xCP..c66,v18"
+19:38:40.875238 version@stat F·[4] S·3KiB[3KiB] Sc·[1.00]
+19:38:40.891002 db@janitor F·6 G·0
+19:38:40.891035 db@open done T·35.3294ms
+19:38:40.891201 table@compaction L0·4 -> L1·0 S·3KiB Q·21
+19:38:40.891307 db@close closing
+19:38:40.899123 table@build created L1@14 N·16 S·2KiB "C78..deb,v10":"xFP..c66,v12"
+19:38:40.899162 table@build exiting
+19:38:40.899169 table@build revert @14
+19:38:40.899290 db@close done T·7.9821ms
+=============== Feb 22, 2021 (CET) ===============
+19:38:47.586147 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+19:38:47.586266 version@stat F·[4] S·3KiB[3KiB] Sc·[1.00]
+19:38:47.586273 db@open opening
+19:38:47.586298 journal@recovery F·1
+19:38:47.587048 journal@recovery recovering @12
+19:38:47.587755 version@stat F·[4] S·3KiB[3KiB] Sc·[1.00]
+19:38:47.605447 db@janitor F·6 G·0
+19:38:47.605471 db@open done T·19.193ms
+19:38:47.605681 db@close closing
+19:38:47.605811 db@close done T·128.2µs
+=============== Feb 22, 2021 (CET) ===============
+19:39:06.184811 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+19:39:06.184945 version@stat F·[4] S·3KiB[3KiB] Sc·[1.00]
+19:39:06.184953 db@open opening
+19:39:06.184979 journal@recovery F·1
+19:39:06.185535 journal@recovery recovering @14
+19:39:06.186463 version@stat F·[4] S·3KiB[3KiB] Sc·[1.00]
+19:39:06.201693 db@janitor F·6 G·0
+19:39:06.201749 db@open done T·16.7757ms
+19:39:06.201808 table@compaction L0·4 -> L1·0 S·3KiB Q·21
+19:39:06.202101 db@close closing
+19:39:06.209974 table@build created L1@18 N·16 S·2KiB "C78..deb,v10":"xFP..c66,v12"
+19:39:06.210015 table@build exiting
+19:39:06.210021 table@build revert @18
+19:39:06.210216 db@close done T·8.1129ms
