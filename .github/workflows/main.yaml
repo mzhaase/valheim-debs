@@ -10,7 +10,7 @@ jobs:
     - name: valheim-server
       run: |
         dpkg-deb --build valheim-server
-        echo ${{ secrets.GPG_PASSPHRASE }} | dpkg-sig -k ${{ secrets.GPG_FINGERPRINT }} --sign builder valheim-server.deb
+        # echo ${{ secrets.GPG_PASSPHRASE }} | dpkg-sig -k ${{ secrets.GPG_FINGERPRINT }} --sign builder valheim-server.deb
     - name: valheim-server-artifact
       uses: actions/upload-artifact@v2
       with:
@@ -19,7 +19,7 @@ jobs:
     - name: valheim-server-plus
       run: |
         dpkg-deb --build valheim-server-plus
-        echo ${{ secrets.GPG_PASSPHRASE }} | dpkg-sig -k ${{ secrets.GPG_FINGERPRINT }} --sign builder valheim-server-plus.deb
+        # echo ${{ secrets.GPG_PASSPHRASE }} | dpkg-sig -k ${{ secrets.GPG_FINGERPRINT }} --sign builder valheim-server-plus.deb
     - name: valheim-server-plus-artifact
       uses: actions/upload-artifact@v2
       with:
