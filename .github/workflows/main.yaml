@@ -111,7 +111,7 @@ jobs:
           local ${{ env.VALHEIM_SERVER_PLUS_PATH }}
 
         echo "publishing"
-        aptly publish repo \
+        aptly publish update \
           -distribution="debian" \
           -passphrase="${{ secrets.GPG_PASSPHRASE }}" \
           -batch \
