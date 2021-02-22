@@ -1,4 +1,4 @@
-name: Build packages and deploy to launchpad
+name: Build packages and release
 
 on: push
 
@@ -10,27 +10,42 @@ jobs:
     - name: valheim-server
       run: |
         dpkg-deb --build valheim-server
-        # echo ${{ secrets.GPG_PASSPHRASE }} | dpkg-sig -k ${{ secrets.GPG_FINGERPRINT }} --sign builder valheim-server.deb
+        version=$(grep Version valheim-server/DEBIAN/control | awk -e '{print $2}')
+        valheim_server_path=valheim-server_"$version"_x64.deb
+        echo "VALHEIM_SERVER_PATH=$valheim_server_path" >> $GITHUB_ENV
+        mv valheim-server.deb $valheim_server_path
     - name: valheim-server-artifact
       uses: actions/upload-artifact@v2
       with:
         name: valheim-server
-        path: valheim-server.deb
+        path: ${{ env.VALHEIM_SERVER_PATH }}
     - name: valheim-server-plus
       run: |
         dpkg-deb --build valheim-server-plus
-        # echo ${{ secrets.GPG_PASSPHRASE }} | dpkg-sig -k ${{ secrets.GPG_FINGERPRINT }} --sign builder valheim-server-plus.deb
+        version=$(grep Version valheim-server-plus/DEBIAN/control | awk -e '{print $2}')
+        valheim_server_plus_path=valheim-server-plus_"$version"_x64.deb
+        echo "VALHEIM_SERVER_PLUS_PATH=$valheim_server_plus_path" >> $GITHUB_ENV
+        mv valheim-server-plus.deb $valheim_server_plus_path
     - name: valheim-server-plus-artifact
       uses: actions/upload-artifact@v2
       with:
         name: valheim-server-plus
-        path: valheim-server-plus.deb
+        path: ${{ env.VALHEIM_SERVER_PLUS_PATH }}
   release:
     needs: build
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main'
     steps:
     - uses: actions/checkout@v2
+    - name: init
+      run: |      
+        sudo apt-get install aptly
+        version=$(grep Version valheim-server/DEBIAN/control | awk -e '{print $2}')
+        valheim_server_path=valheim-server_"$version"_x64.deb
+        echo "VALHEIM_SERVER_PATH=$valheim_server_path" >> $GITHUB_ENV
+        version=$(grep Version valheim-server-plus/DEBIAN/control | awk -e '{print $2}')
+        valheim_server_plus_path=valheim-server-plus_"$version"_x64.deb
+        echo "VALHEIM_SERVER_PLUS_PATH=$valheim_server_plus_path" >> $GITHUB_ENV
     - name: download valheim-server-artifact
       uses: actions/download-artifact@v2
       with:
@@ -42,6 +57,9 @@ jobs:
     - name: export version
       run: |
         VER=$(cat VERSION)
+        echo "current version $VER"
+        VER=$(echo $VER | perl -pe 's/^((\d+\.)*)(\d+)(.*)$/$1.($3+1).$4/e')
+        echo "new version $VER"
         echo "VERSION=$VER" >> $GITHUB_ENV
     - name: Create Release
       id: create_release
@@ -58,8 +76,8 @@ jobs:
       uses: svenstaro/upload-release-action@v2
       with:
         repo_token: ${{ secrets.GITHUB_TOKEN }}
-        file: valheim-server.deb
-        asset_name: valheim-server.deb
+        file: ${{ env.VALHEIM_SERVER_PATH }}
+        asset_name: ${{ env.VALHEIM_SERVER_PATH }}
         tag: ${{ env.VERSION }}
         overwrite: true
         body: "Release"
@@ -67,8 +85,43 @@ jobs:
       uses: svenstaro/upload-release-action@v2
       with:
         repo_token: ${{ secrets.GITHUB_TOKEN }}
-        file: valheim-server-plus.deb
-        asset_name: valheim-server-plus.deb
+        file: ${{ env.VALHEIM_SERVER_PLUS_PATH }}
+        asset_name: ${{ env.VALHEIM_SERVER_PLUS_PATH }}
         tag: ${{ env.VERSION }}
         overwrite: true
         body: "Release"
+    - name: upload to apt repo
+      run: |
+        echo "Importing secret key"
+        echo "${{ secrets.GPG_PRIVATE_KEY }}" | gpg1 --import
+
+        echo "Importing public key"
+        gpg1 --no-default-keyring --keyring trustedkeys.gpg --import key.gpg
+
+        cp .aptly.conf /home/runner/
+
+        # echo "importing remote repo to local"
+        # aptly repo import remote local *
+        aptly repo add \
+          -force-replace \
+          local ${{ env.VALHEIM_SERVER_PATH }}
+        aptly repo add \
+          -force-replace \
+          local ${{ env.VALHEIM_SERVER_PLUS_PATH }}
+
+        echo "publishing"
+        aptly publish update \
+          -passphrase="${{ secrets.GPG_PASSPHRASE }}" \
+          -batch \
+          -force-overwrite \
+          debian s3:apt.facinating.tech:
+
+        git config --global user.name 'mzhaase'
+        git config --global user.email 'mzhaase@users.noreply.github.com'
+        git add .aptly
+        git add VERSION
+        git commit -m "Updating local aptly repo"
+        git push
+      env:
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
