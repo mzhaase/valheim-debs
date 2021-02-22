@@ -101,15 +101,15 @@ jobs:
 
         cp .aptly.conf /home/runner/
 
-        echo "loading remote repo"
-        aptly mirror create remote https://apt.facinating.tech/ debian
-        aptly mirror update remote
+        # echo "loading remote repo"
+        # aptly mirror create remote https://apt.facinating.tech/ debian
+        # aptly mirror update remote
 
         echo "creating local repo"
         aptly repo create local
 
-        echo "importing remote repo to local"
-        aptly repo import remote local *
+        # echo "importing remote repo to local"
+        # aptly repo import remote local *
         aptly repo add local ${{ env.VALHEIM_SERVER_PATH }}
         aptly repo add local ${{ env.VALHEIM_SERVER_PLUS_PATH }}
 
