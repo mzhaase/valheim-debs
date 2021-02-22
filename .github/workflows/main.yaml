@@ -94,10 +94,10 @@ jobs:
     - name: upload to apt repo
       run: |
         echo "Importing secret key"
-        echo ${{ secrets.GPG_PRIVATE_KEY }} | gpg1 --import
+        echo "${{ secrets.GPG_PRIVATE_KEY }}" | gpg1 --import
 
         echo "Importing public key"
-        gpg --no-default-keyring --keyring trustedkeys.gpg --import key.gpg
+        gpg1--no-default-keyring --keyring trustedkeys.gpg --import key.gpg
 
         cp .aptly.conf /home/runner/
 
@@ -116,7 +116,7 @@ jobs:
         echo "publishing"
         aptly publish repo \
           -distribution="debian" \
-          -passphrase=${{ secrets.GPG_PASSPHRASE }}
+          -passphrase="${{ secrets.GPG_PASSPHRASE }}"
           local s3:apt.facinating.tech:
       env:
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
