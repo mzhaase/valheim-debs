@@ -112,7 +112,6 @@ jobs:
 
         echo "publishing"
         aptly publish update \
-          -distribution="debian" \
           -passphrase="${{ secrets.GPG_PASSPHRASE }}" \
           -batch \
           -force-overwrite \
