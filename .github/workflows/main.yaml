@@ -104,7 +104,7 @@ jobs:
         # echo "importing remote repo to local"
         # aptly repo import remote local *
         aptly repo add \
-          -force-rplace \
+          -force-replace \
           local ${{ env.VALHEIM_SERVER_PATH }}
         aptly repo add \
           -force-replace \
