@@ -60,7 +60,7 @@ jobs:
         echo "current version $VER"
         VER=$(echo $VER | perl -pe 's/^((\d+\.)*)(\d+)(.*)$/$1.($3+1).$4/e')
         echo "new version $VER"
-        echo $VER > VERSION
+        echo $VER > ./VERSION
         echo "VERSION=$VER" >> $GITHUB_ENV
     # - name: Create Release
     #   id: create_release
@@ -101,14 +101,14 @@ jobs:
 
         cp .aptly.conf /home/runner/
 
-        # echo "loading remote repo"
-        # aptly mirror create remote https://apt.facinating.tech/ debian
-        # aptly mirror update remote
-
         # echo "importing remote repo to local"
         # aptly repo import remote local *
-        aptly repo add local ${{ env.VALHEIM_SERVER_PATH }}
-        aptly repo add local ${{ env.VALHEIM_SERVER_PLUS_PATH }}
+        aptly repo add \
+          -force-rplace \
+          local ${{ env.VALHEIM_SERVER_PATH }}
+        aptly repo add \
+          -force-replace \
+          local ${{ env.VALHEIM_SERVER_PLUS_PATH }}
 
         echo "publishing"
         aptly publish repo \
