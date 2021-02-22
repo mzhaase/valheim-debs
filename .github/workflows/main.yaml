@@ -100,8 +100,8 @@ jobs:
         aptly repo add local ${{ env.VALHEIM_SERVER_PATH }}
         aptly repo add local ${{ env.VALHEIM_SERVER_PLUS_PATH }}
         aptly publish repo \
-          -distribution=./ \
-          -nosign \ 
+          -distribution="./" \
+          -skip-signing \ 
           local s3:apt.facinating.tech:
       env:
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
