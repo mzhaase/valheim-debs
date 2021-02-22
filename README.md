@@ -20,6 +20,7 @@ For backing up your world files you can add this script to cron: /usr/local/valh
 
 ### Usage
     dpkg --add-architecture i386
+    apt-get update
     apt-get install ./valheim-server.deb
     echo "PASSWORD=mypass1244" >> /etc/default/valheim
     systemctl start valheim-server
@@ -31,6 +32,7 @@ Not that this also installs valheim-server, but starting valheim-server service 
 
 ### Usage
     dpkg --add-architecture i386
+    apt-get update
     apt-get install ./valheim-server.deb
     apt-get install ./valheim-server-plus.deb
     echo "PASSWORD=mypass1244" >> /etc/default/valheim

@@ -8,19 +8,27 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: valheim-server
-      run: dpkg-deb --build valheim-server
+      run: |
+        dpkg-deb --build valheim-server
+        version=$(grep Version valheim-server/DEBIAN/control | awk -e '{print $2}'))
+        echo "VALHEIM_SERVER_VERSION=$version" >> $GITHUB_ENV
+        mv valheim-server.deb valheim-server_$version_x64.deb
     - name: valheim-server-artifact
       uses: actions/upload-artifact@v2
       with:
         name: valheim-server
-        path: valheim-server.deb
+        path: valheim-server_${{ env.VALHEIM_SERVER_VERSION }}_x64.deb
     - name: valheim-server-plus
-      run: dpkg-deb --build valheim-server-plus
+      run: |
+        dpkg-deb --build valheim-server-plus
+        version=$(grep Version valheim-server-plus/DEBIAN/control | awk -e '{print $2}'))
+        echo "VALHEIM_SERVER_PLUS_VERSION=$version" >> $GITHUB_ENV
+        mv valheim-server-plus.deb valheim-server-plus_$version_x64.deb
     - name: valheim-server-plus-artifact
       uses: actions/upload-artifact@v2
       with:
         name: valheim-server-plus
-        path: valheim-server-plus.deb
+        path: valheim-servervalheim-server_${{ env.VALHEIM_SERVER_PLUS_VERSION }}_x64.deb
   release:
     needs: build
     runs-on: ubuntu-latest
@@ -28,7 +36,14 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: init
-      run: sudo apt-get install aptly
+      run: |      
+        sudo apt-get install aptly
+        valheim_server_version=$(grep Version valheim-server/DEBIAN/control | awk -e '{print $2}'))
+        valheim_server_path=valheim-server_$"valheim_server_version"_x64.deb
+        echo "VALHEIM_SERVER_PATH=$valheim_server_path" >> $GITHUB_ENV
+        valheim_server_plus_version=$(grep Version valheim-server-plus/DEBIAN/control | awk -e '{print $2}'))
+        valheim_server_plus_path=valheim-server-plus_$"valheim_server_version"_x64.deb
+        echo "VALHEIM_SERVER_PLUS_PATH=$valheim_server_plus_path" >> $GITHUB_ENV
     - name: download valheim-server-artifact
       uses: actions/download-artifact@v2
       with:
@@ -56,8 +71,8 @@ jobs:
     #   uses: svenstaro/upload-release-action@v2
     #   with:
     #     repo_token: ${{ secrets.GITHUB_TOKEN }}
-    #     file: valheim-server.deb
-    #     asset_name: valheim-server.deb
+    #     file: ${{ env.VALHEIM_SERVER_PATH }}
+    #     asset_name: ${{ env.VALHEIM_SERVER_PATH }}
     #     tag: ${{ env.VERSION }}
     #     overwrite: true
     #     body: "Release"
@@ -65,8 +80,8 @@ jobs:
     #   uses: svenstaro/upload-release-action@v2
     #   with:
     #     repo_token: ${{ secrets.GITHUB_TOKEN }}
-    #     file: valheim-server-plus.deb
-    #     asset_name: valheim-server-plus.deb
+    #     file: ${{ env.VALHEIM_SERVER_PLUS_PATH }}
+    #     asset_name: ${{ env.VALHEIM_SERVER_PLUS_PATH }}
     #     tag: ${{ env.VERSION }}
     #     overwrite: true
     #     body: "Release"
@@ -78,11 +93,10 @@ jobs:
         passphrase: ${{ secrets.PASSPHRASE }}
     - name: upload to apt repo
       run: |
-        echo $(ls -lah)
         echo $PWD
         cp .aptly.conf /home/runner/
-        aptly repo add local valheim-server.deb
-        aptly repo add local valheim-server-plus.deb
+        aptly repo add local ${{ env.VALHEIM_SERVER_PATH }}
+        aptly repo add local ${{ env.VALHEIM_SERVER_PLUS_PATH }}
         aptly publish repo \
           -distribution="debian" \
           -passphrase=${{ secrets.GPG_PASSPHRASE }} \
