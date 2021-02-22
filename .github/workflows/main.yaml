@@ -92,18 +92,10 @@ jobs:
     #     body: "Release"
     - name: upload to apt repo
       run: |
-        #echo "creating keyring for signing"
-        # gpg \
-        #   --no-default-keyring \
-        #   --secret-keyring /home/runner/apt.gpg \
-
-        # echo "importing private key"
-        # echo ${{ secrets.GPG_PRIVATE_KEY }} | gpg \
-        #   --import \
-        #   --no-default-keyring \
-        #   --secret-keyring /home/runner/apt.gpg
-
         cp .aptly.conf /home/runner/
+        aptly mirror create remote https://api.facinating.tech/debian/
+        aptly repo create local
+        aptly repo import remote local
         aptly repo add local ${{ env.VALHEIM_SERVER_PATH }}
         aptly repo add local ${{ env.VALHEIM_SERVER_PLUS_PATH }}
         aptly publish repo \
