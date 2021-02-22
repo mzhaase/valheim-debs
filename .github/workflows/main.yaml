@@ -90,22 +90,27 @@ jobs:
     #     tag: ${{ env.VERSION }}
     #     overwrite: true
     #     body: "Release"
-    - name: Import GPG key
-      id: import_gpg
-      uses: crazy-max/ghaction-import-gpg@v3
-      with:
-        gpg-private-key: ${{ secrets.GPG_PRIVATE_KEY }}
-        passphrase: ${{ secrets.PASSPHRASE }}
     - name: upload to apt repo
       run: |
-        echo $PWD
+        echo "creating keyring for signing"
+        gpg \
+          --no-default-keyring \
+          --keyring /home/runner/apt.gpg
+
+        echo "importing private key"
+        gpg \
+          --no-default-keyring \
+          --keyring /home/runner/apt.gpg \
+          --import ${{ secrets.GPG_PRIVATE_KEY }}
+
         cp .aptly.conf /home/runner/
         aptly repo add local ${{ env.VALHEIM_SERVER_PATH }}
         aptly repo add local ${{ env.VALHEIM_SERVER_PLUS_PATH }}
         aptly publish repo \
           -distribution="debian" \
           -passphrase=${{ secrets.GPG_PASSPHRASE }} \
-          -gpg-key=${{ steps.import_gpg.outputs.keyid }} \
+          -keyring=/home/runner/apt.gpg \
+          -gpg.key=${{ secrets.GPG_FINGERPRINT }} \
           local s3:apt.facinating.tech:
       env:
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
