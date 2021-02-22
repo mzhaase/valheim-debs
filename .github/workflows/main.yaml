@@ -1,4 +1,4 @@
-name: Build packages and deploy to launchpad
+name: Build packages and release
 
 on: push
 
@@ -78,6 +78,7 @@ jobs:
         passphrase: ${{ secrets.PASSPHRASE }}
     - name: upload to apt repo
       run: |
+        echo $PWD
         aptly repo add local valheim-server.deb -config=./aptly.conf
         aptly repo add local valheim-server-plus.deb -config=./aptly.conf
         aptly publish repo local s3:apt.facinating.tech: \
