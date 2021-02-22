@@ -115,6 +115,7 @@ jobs:
           -distribution="debian" \
           -passphrase="${{ secrets.GPG_PASSPHRASE }}" \
           -batch \
+          -force-overwrite \
           local s3:apt.facinating.tech:
 
         git config --global user.name 'mzhaase'
