@@ -10,7 +10,7 @@ jobs:
     - name: valheim-server
       run: |
         dpkg-deb --build valheim-server
-        version=$(grep Version valheim-server/DEBIAN/control | awk -e '{print $2}'))
+        version=$(grep Version valheim-server/DEBIAN/control | awk -e '{print $2}')
         echo "VALHEIM_SERVER_VERSION=$version" >> $GITHUB_ENV
         mv valheim-server.deb valheim-server_$version_x64.deb
     - name: valheim-server-artifact
@@ -21,7 +21,7 @@ jobs:
     - name: valheim-server-plus
       run: |
         dpkg-deb --build valheim-server-plus
-        version=$(grep Version valheim-server-plus/DEBIAN/control | awk -e '{print $2}'))
+        version=$(grep Version valheim-server-plus/DEBIAN/control | awk -e '{print $2}')
         echo "VALHEIM_SERVER_PLUS_VERSION=$version" >> $GITHUB_ENV
         mv valheim-server-plus.deb valheim-server-plus_$version_x64.deb
     - name: valheim-server-plus-artifact
