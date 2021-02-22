@@ -98,10 +98,9 @@ jobs:
           --keyring /home/runner/apt.gpg
 
         echo "importing private key"
-        gpg \
-          --no-default-keyring \
-          --keyring /home/runner/apt.gpg \
-          --import ${{ secrets.GPG_PRIVATE_KEY }}
+        echo ${{ secrets.GPG_PRIVATE_KEY }} | gpg \
+          --import
+          --keyring /home/runner/apt.gpg
 
         cp .aptly.conf /home/runner/
         aptly repo add local ${{ env.VALHEIM_SERVER_PATH }}
