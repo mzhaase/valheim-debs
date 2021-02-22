@@ -38,10 +38,10 @@ jobs:
     - name: init
       run: |      
         sudo apt-get install aptly
-        valheim_server_version=$(grep Version valheim-server/DEBIAN/control | awk -e '{print $2}'))
+        valheim_server_version=$(grep Version valheim-server/DEBIAN/control | awk -e '{print $2}')
         valheim_server_path=valheim-server_$"valheim_server_version"_x64.deb
         echo "VALHEIM_SERVER_PATH=$valheim_server_path" >> $GITHUB_ENV
-        valheim_server_plus_version=$(grep Version valheim-server-plus/DEBIAN/control | awk -e '{print $2}'))
+        valheim_server_plus_version=$(grep Version valheim-server-plus/DEBIAN/control | awk -e '{print $2}')
         valheim_server_plus_path=valheim-server-plus_$"valheim_server_version"_x64.deb
         echo "VALHEIM_SERVER_PLUS_PATH=$valheim_server_plus_path" >> $GITHUB_ENV
     - name: download valheim-server-artifact
