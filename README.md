@@ -1,7 +1,7 @@
 # valheim-debs
 Debian packages for valheim.
 
-There are two packages, valheim-server and valheim-server-plus. valheim-server installs the valheim dedicated server. valheim-server-plus installs ValheimPlus mod: https://www.nexusmods.com/valheim/mods/4 this has the prerequisite of also installing valheim-server. Currently you need to download the debs from the release manually.
+There are two packages, valheim-server and valheim-server-plus. valheim-server installs the valheim dedicated server. valheim-server-plus installs ValheimPlus mod: https://www.nexusmods.com/valheim/mods/4 this has the prerequisite of also installing valheim-server. You can download the debs manually from release or use the repository.
 
 Both packages register a systemd service and can be configured via files in /etc/default
 
@@ -20,8 +20,11 @@ For backing up your world files you can add this script to cron: /usr/local/valh
 
 ### Usage
     dpkg --add-architecture i386
+    wget https://apt.facinating.tech/key.gpg
+    apt-key add key.gpg
+    echo "deb https://apt.facinating.tech debian main" > /etc/apt/sources.list.d/facinating.tech.list
     apt-get update
-    apt-get install ./valheim-server.deb
+    apt-get install valheim-server
     echo "PASSWORD=mypass1244" >> /etc/default/valheim-server
     systemctl start valheim-server
 
@@ -32,9 +35,11 @@ Not that this also installs valheim-server, but starting valheim-server service 
 
 ### Usage
     dpkg --add-architecture i386
+    wget https://apt.facinating.tech/key.gpg
+    apt-key add key.gpg
+    echo "deb https://apt.facinating.tech debian main" > /etc/apt/sources.list.d/facinating.tech.list
     apt-get update
-    apt-get install ./valheim-server.deb
-    apt-get install ./valheim-server-plus.deb
+    apt-get install valheim-server-plus
     echo "PASSWORD=mypass1244" >> /etc/default/valheim-server-plus
     
     # if you previously ran valheim-server without the mod
