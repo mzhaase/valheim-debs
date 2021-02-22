@@ -79,10 +79,10 @@ jobs:
     - name: upload to apt repo
       run: |
         echo $PWD
-        aptly repo add local valheim-server.deb -config=./aptly.conf
-        aptly repo add local valheim-server-plus.deb -config=./aptly.conf
+        cp .aptly.conf /home/runner/
+        aptly repo add local valheim-server.deb
+        aptly repo add local valheim-server-plus.deb
         aptly publish repo local s3:apt.facinating.tech: \
-          -config=./aptly.conf 
           -passphrase=${{ secrets.GPG_PASSPHRASE }}
       env:
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
