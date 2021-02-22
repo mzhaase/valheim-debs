@@ -28,7 +28,6 @@ jobs:
             sed -i "s/wget.+/wget $unix_url/g" valheim-server-plus/DEBIAN/postinst
             echo "Changing local version to $remote_mod_version"
             sed -i "s/Version: $local_mod_version/Version: $remote_mod_version/g" valheim-server-plus/DEBIAN/control
-            echo $remote_mod_version > VERSION
           fi
       - name: Check for modified files
         id: git-check

@@ -60,7 +60,7 @@ jobs:
         echo "current version $VER"
         VER=$(echo $VER | perl -pe 's/^((\d+\.)*)(\d+)(.*)$/$1.($3+1).$4/e')
         echo "new version $VER"
-        cat $VER > VERSION
+        echo $VER > VERSION
         echo "VERSION=$VER" >> $GITHUB_ENV
     # - name: Create Release
     #   id: create_release
