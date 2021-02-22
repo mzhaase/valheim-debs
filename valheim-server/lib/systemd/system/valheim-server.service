@@ -1,0 +1,12 @@
+[Unit]
+Description=Valheim dedicated server
+StandardOutput=journal
+StandardError=journal
+
+[Service]
+Type=simple
+User=valheim
+EnvironmentFile=/etc/default/valheim-server
+PassEnvironment=templdpath LD_LIBRARY_PATH SteamAppId
+ExecStart=/usr/local/valheim-server/valheim_server.x86_64 -name "$SERVERNAME" -port $PORT -world "$WORLD" -password "$PASSWORD" -nographics -batchmode
+ExecStop=/usr/bin/pkill --signal SIGINT "valheim"

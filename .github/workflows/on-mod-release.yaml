@@ -1,0 +1,45 @@
+name: On valheim plus release
+on:
+  schedule:
+    - cron:  '*/5 * * * *'
+jobs:
+  get-version:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: update package
+        run: |
+          release=$(curl -sL https://api.github.com/repos/nxPublic/ValheimPlus/releases/latest)
+          remote_mod_version=$(echo $release | jq -r ".tag_name")
+          echo "REMOTE_MOD_VERSON=$remote_mod_version" >> $GITHUB_ENV
+          local_mod_version=$(grep Version valheim-server-plus/DEBIAN/control | awk -e '{print $2}')
+
+          echo "Newest released version: $remote_mod_version"
+          echo "Local version: $local_mod_version"
+
+          if [[ $remote_mod_version == $local_mod_version ]]; then
+            echo "Versions match. Terminating."
+          else
+            echo "Version mismatch"
+            echo "Fetching $unix_url"
+            unix_url=$(echo $release | \
+              python3 -c 'import json,sys;print([item["browser_download_url"] for item in json.load(sys.stdin)["assets"] if item["name"] == "UnixServer.zip"][0])')
+            echo "Changing download url"
+            sed -i "s/wget.+/wget $unix_url/g" valheim-server-plus/DEBIAN/postinst
+            echo "Changing local version to $remote_mod_version"
+            sed -i "s/Version: $local_mod_version/Version: $remote_mod_version/g" valheim-server-plus/DEBIAN/control
+            echo $remote_mod_version > VERSION
+          fi
+      - name: Check for modified files
+        id: git-check
+        run: echo ::set-output name=modified::$([ -z "`git status --porcelain`" ] && echo "false" || echo "true")
+      - name: Commit latest release version
+        if: steps.git-check.outputs.modified == 'true'
+        run: |
+          git config --global user.name 'mzhaase'
+          git config --global user.email 'mzhaase@users.noreply.github.com'
+          git commit -am "Valheim Plus release ${{ env.REMOTE_MOD_VERSION }}"
+          git push
+        # we need to use a different token here see https://github.community/t/push-from-action-does-not-trigger-subsequent-action/16854
+        with:
+          github_token: ${{ secrets.GH_TOKEN}}

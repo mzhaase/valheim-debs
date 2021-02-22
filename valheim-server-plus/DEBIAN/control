@@ -1,0 +1,7 @@
+Package: valheim-server-plus
+Version: 0.8
+Architecture: amd64
+Essential: no
+Maintainer: Mattis Haase
+Description: Valheim plus mod for linux
+Depends: valheim-server,libc6-dev,wget,unzip

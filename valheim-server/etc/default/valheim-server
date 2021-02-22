@@ -1,0 +1,12 @@
+# these are options you can configure
+WORLD=dedicated
+SERVERNAME=valheim-server
+PORT=2456
+# you HAVE to uncomment the following line and set a server password
+#PASSWORD=
+
+
+# these are options you should really leave alone
+templdpath=$LD_LIBRARY_PATH
+LD_LIBRARY_PATH=/usr/local/valheim-server/linux64:$LD_LIBRARY_PATH
+SteamAppId=892970

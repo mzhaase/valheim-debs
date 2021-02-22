@@ -1,0 +1,74 @@
+name: Build packages and deploy to launchpad
+
+on: push
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: valheim-server
+      run: |
+        dpkg-deb --build valheim-server
+        echo ${{ secrets.GPG_PASSPHRASE }} | dpkg-sig -k ${{ secrets.GPG_FINGERPRINT }} --sign builder valheim-server.deb
+    - name: valheim-server-artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: valheim-server
+        path: valheim-server.deb
+    - name: valheim-server-plus
+      run: |
+        dpkg-deb --build valheim-server-plus
+        echo ${{ secrets.GPG_PASSPHRASE }} | dpkg-sig -k ${{ secrets.GPG_FINGERPRINT }} --sign builder valheim-server-plus.deb
+    - name: valheim-server-plus-artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: valheim-server-plus
+        path: valheim-server-plus.deb
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    steps:
+    - uses: actions/checkout@v2
+    - name: download valheim-server-artifact
+      uses: actions/download-artifact@v2
+      with:
+        name: valheim-server
+    - name: download valheim-server-plus-artifact
+      uses: actions/download-artifact@v2
+      with:
+        name: valheim-server-plus
+    - name: export version
+      run: |
+        VER=$(cat VERSION)
+        echo "VERSION=$VER" >> $GITHUB_ENV
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ env.VERSION }}
+        release_name: Release ${{ env.VERSION }}
+        body: Release
+        draft: false
+        prerelease: false
+    - name: upload valheim-server to release
+      uses: svenstaro/upload-release-action@v2
+      with:
+        repo_token: ${{ secrets.GITHUB_TOKEN }}
+        file: valheim-server.deb
+        asset_name: valheim-server.deb
+        tag: ${{ env.VERSION }}
+        overwrite: true
+        body: "Release"
+    - name: upload valheim-server-plus to release
+      uses: svenstaro/upload-release-action@v2
+      with:
+        repo_token: ${{ secrets.GITHUB_TOKEN }}
+        file: valheim-server-plus.deb
+        asset_name: valheim-server-plus.deb
+        tag: ${{ env.VERSION }}
+        overwrite: true
+        body: "Release"

@@ -1,0 +1,17 @@
+# these are options you can configure
+WORLD=dedicated
+SERVERNAME=valheim-server
+PORT=2456
+# you HAVE to uncomment the following line and set a server password
+#PASSWORD=
+
+
+# these are options you should really leave alone
+SteamAppId=892970
+
+DOORSTOP_ENABLE=TRUE
+DOORSTOP_INVOKE_DLL_PATH=/usr/local/valheim-server/BepInEx/core/BepInEx.Preloader.dll
+LD_PRELOAD=libdoorstop_x64.so
+LD_LIBRARY_PATH=/usr/local/valheim-server/linux64:/usr/local/valheim-server/doorstop_libs:
+DYLD_LIBRARY_PATH=/usr/local/valheim-server/doorstop_libs
+DYLD_INSERT_LIBRARIES=/usr/local/valheim-server/doorstop_libs/libdoorstop_x64.so

@@ -1,0 +1,12 @@
+[Unit]
+Description=Valheim plus for valheim server
+StandardOutput=journal
+StandardError=journal
+
+[Service]
+Type=simple
+User=valheim
+EnvironmentFile=/etc/default/valheim-server-plus
+PassEnvironment=LD_LIBRARY_PATH SteamAppId DOORSTOP_ENABLE DOORSTOP_INVOKE_DLL_PATH LD_PRELOAD DYLD_LIBRARY_PATH DYLD_INSERT_LIBRARIES
+ExecStart=/usr/local/valheim-server/valheim_server.x86_64 -name "$SERVERNAME" -port $PORT -world "$WORLD" -password "$PASSWORD" -nographics -batchmode
+ExecStop=/usr/bin/pkill --signal SIGINT "valheim"
