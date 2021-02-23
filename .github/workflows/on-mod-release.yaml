@@ -25,7 +25,7 @@ jobs:
             unix_url=$(echo $release | \
               python3 -c 'import json,sys;print([item["browser_download_url"] for item in json.load(sys.stdin)["assets"] if item["name"] == "UnixServer.zip"][0])')
             echo "Changing download url"
-            sed -i "s/wget.+/wget $unix_url/g" valheim-server-plus/DEBIAN/postinst
+            sed -i "s/wget.*/wget ${unix_url//\//\\/}/g" valheim-server-plus/DEBIAN/postinst
             echo "Changing local version to $remote_mod_version"
             sed -i "s/Version: $local_mod_version/Version: $remote_mod_version/g" valheim-server-plus/DEBIAN/control
           fi
