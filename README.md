@@ -17,7 +17,6 @@ The server can be configured by changing /etc/default/valheim-server. You HAVE t
 The server will be installed to /usr/local/valheim-server the world is in /home/valheim/.config/unity3d/IronGate/Valheim/worlds/
 
 For backing up your world files you can add this script to cron: /usr/local/valheim-server/backup.sh
-
 ### Usage
     dpkg --add-architecture i386
     wget https://apt.facinating.tech/key.gpg
