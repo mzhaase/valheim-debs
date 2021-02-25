@@ -25,7 +25,6 @@ case "$1" in
         unzip -o UnixServer.zip
         rm UnixServer.zip
         chown -R valheim:root /usr/local/valheim-server
-        chmod +x /usr/local/valheim-server/run_bepinex.sh
     ;;
 
     abort-upgrade|abort-remove|abort-deconfigure)
