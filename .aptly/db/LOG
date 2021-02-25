@@ -670,3 +670,48 @@
 14:45:07.920216 db@open done T·148.956182ms
 14:45:12.241564 db@close closing
 14:45:12.241616 db@close done T·51.303µs
+=============== Feb 25, 2021 (UTC) ===============
+15:13:07.255739 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+15:13:07.255879 version@stat F·[2 1] S·22KiB[2KiB 20KiB] Sc·[0.50 0.00]
+15:13:07.255886 db@open opening
+15:13:07.255924 journal@recovery F·1
+15:13:07.256910 journal@recovery recovering @146
+15:13:07.258309 memdb@flush created L0@148 N·3 S·477B "E26..ain,v248":"xCP..f1c,v247"
+15:13:07.259162 version@stat F·[3 1] S·23KiB[2KiB 20KiB] Sc·[0.75 0.00]
+15:13:07.260733 db@janitor F·6 G·0
+15:13:07.260763 db@open done T·4.869891ms
+15:13:07.279691 db@close closing
+15:13:07.279749 db@close done T·56.202µs
+=============== Feb 25, 2021 (UTC) ===============
+15:13:07.295836 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+15:13:07.295964 version@stat F·[3 1] S·23KiB[2KiB 20KiB] Sc·[0.75 0.00]
+15:13:07.295971 db@open opening
+15:13:07.296010 journal@recovery F·1
+15:13:07.296971 journal@recovery recovering @149
+15:13:07.298492 memdb@flush created L0@151 N·6 S·1KiB "C25..deb,v250":"xFP..98d,v252"
+15:13:07.299247 version@stat F·[4 1] S·24KiB[3KiB 20KiB] Sc·[1.00 0.00]
+15:13:07.301350 db@janitor F·7 G·0
+15:13:07.301391 db@open done T·5.401001ms
+15:13:07.301431 table@compaction L0·4 -> L1·1 S·24KiB Q·256
+15:13:07.303073 table@build created L1@154 N·165 S·23KiB "C01..deb,v160":"xFP..e34,v223"
+15:13:07.409600 version@stat F·[0 1] S·23KiB[0B 23KiB] Sc·[0.00 0.00]
+15:13:07.410924 db@close closing
+15:13:07.411071 table@commit exiting
+15:13:07.411132 table@remove removed @151
+15:13:07.411166 table@remove removed @148
+15:13:07.411207 table@remove removed @145
+15:13:07.411274 table@remove removed @142
+15:13:07.411307 table@remove removed @141
+15:13:07.411427 db@close done T·501.809µs
+=============== Feb 25, 2021 (UTC) ===============
+15:13:07.421737 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+15:13:07.421865 version@stat F·[0 1] S·23KiB[0B 23KiB] Sc·[0.00 0.00]
+15:13:07.421879 db@open opening
+15:13:07.421911 journal@recovery F·1
+15:13:07.423895 journal@recovery recovering @152
+15:13:07.449636 memdb@flush created L0@155 N·6 S·1KiB "C15..deb,v257":"xFP..224,v259"
+15:13:07.450449 version@stat F·[1 1] S·24KiB[1KiB 23KiB] Sc·[0.25 0.00]
+15:13:07.452422 db@janitor F·4 G·0
+15:13:07.452468 db@open done T·30.580268ms
+15:13:11.711452 db@close closing
+15:13:11.711525 db@close done T·70.001µs
