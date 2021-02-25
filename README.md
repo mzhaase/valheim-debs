@@ -39,13 +39,13 @@ Not that this also installs valheim-server, but starting valheim-server service 
     echo "deb https://apt.facinating.tech debian main" > /etc/apt/sources.list.d/facinating.tech.list
     apt-get update
     apt-get install valheim-server-plus
-    echo "PASSWORD=mypass1244" >> /etc/default/valheim-server-plus
     
     # if you previously ran valheim-server without the mod
     systemctl stop valheim-server
     systemctl disable valheim-server
     systemctl start valheim-server-plus
 
+Note: this server is configured via /usr/local/valheim-server/start_server_bepinex.sh
 ## checking logs
     journalctl -u valheim-server -f
     # or
