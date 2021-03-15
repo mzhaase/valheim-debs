@@ -1,8 +1,8 @@
 name: On valheim plus release
 on:
-- schedule:
+  schedule:
   - cron:  '*/5 * * * *'
-- workflow_dispatch
+  workflow_dispatch: {}
 
 jobs:
   get-version:
