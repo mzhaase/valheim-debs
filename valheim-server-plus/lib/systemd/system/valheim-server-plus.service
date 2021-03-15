@@ -8,3 +8,4 @@ Type=simple
 User=valheim
 ExecStart=/usr/local/valheim-server/start_server_bepinex.sh
 ExecStop=/usr/bin/pkill --signal SIGINT "valheim"
+WorkingDirectory=/usr/local/valheim-server
