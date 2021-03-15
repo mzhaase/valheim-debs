@@ -21,10 +21,10 @@ set -e
 
 case "$1" in
     purge|remove|upgrade|failed-upgrade|abort-install|abort-upgrade|disappear)
+        cp -f /usr/local/valheim-server/BepInEx/config/valheim_plus.cfg /home/valheim/valheim_plus.cfg.bak
         rm -rf /usr/local/valheim-server/BepInEx
         # this restores files overridden by the mod
         /usr/games/steamcmd +login anonymous +force_install_dir /usr/local/valheim-server +app_update 896660 validate +exit
-        cp -f /usr/local/valheim-server/BepInEx/config/valheim_plus.cfg /home/valheim/valheim_plus.cfg.bak
     ;;
 
     *)
