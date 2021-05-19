@@ -21,7 +21,7 @@ set -e
 case "$1" in
     configure)
         cd /usr/local/valheim-server
-        wget https://github.com/valheimPlus/ValheimPlus/releases/download/0.9.7/UnixServer.zip
+        wget https://github.com/valheimPlus/ValheimPlus/releases/download/0.9.8/UnixServer.zip
         unzip -o UnixServer.zip
         rm UnixServer.zip
         chown -R valheim:root /usr/local/valheim-server
